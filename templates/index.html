@@ -3,10 +3,56 @@
 <head>
     <title>HydroForecaster</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        async function fetchStations() {
+            const districtSelect = document.getElementById('district');
+            const stationSelect = document.getElementById('station');
+            const district = districtSelect.value;
+            if (!district) {
+                stationSelect.innerHTML = '<option value="">Select district first</option>';
+                return;
+            }
+            const response = await fetch(`/locations?district=${district}`);
+            const data = await response.json();
+            stationSelect.innerHTML = '';
+            data.stations.forEach(station => {
+                const option = document.createElement('option');
+                option.value = station;
+                option.textContent = station;
+                stationSelect.appendChild(option);
+            });
+        }
+
+        async function fetchDistricts() {
+            const districtSelect = document.getElementById('district');
+            const response = await fetch('/locations');
+            const data = await response.json();
+            districtSelect.innerHTML = '<option value="">Select district</option>';
+            data.districts.forEach(district => {
+                const option = document.createElement('option');
+                option.value = district;
+                option.textContent = district;
+                districtSelect.appendChild(option);
+            });
+        }
+
+        window.onload = fetchDistricts;
+    </script>
 </head>
 <body>
     <h1>HydroForecaster</h1>
-    <p>Click below to get the latest groundwater forecast from API data.</p>
-    <a href="/predict"><button>Get Latest Forecast</button></a>
+    <form action="/predict" method="get">
+        <label for="district">District:</label>
+        <select id="district" name="district" onchange="fetchStations()" required>
+            <option value="">Loading districts...</option>
+        </select>
+        <br><br>
+        <label for="station">Station:</label>
+        <select id="station" name="station" required>
+            <option value="">Select district first</option>
+        </select>
+        <br><br>
+        <button type="submit">Get Forecast</button>
+    </form>
 </body>
 </html>
