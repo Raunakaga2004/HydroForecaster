@@ -1,31 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Hydro Forecaster</title>
+    <title>HydroForecaster</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-    <h1>Hydro Forecaster (LSTM)</h1>
-    <form method="POST">
-        <label>Select a District:</label>
-        <select name="district">
-            {% for dist in districts %}
-                <option value="{{ dist }}" {% if selected == dist %}selected{% endif %}>{{ dist }}</option>
-            {% endfor %}
-        </select>
-        <input type="submit" value="Forecast">
-    </form>
-
-    {% if forecast_df is not none and not forecast_df.empty %}
-
-        <h2>Forecast for {{ selected }}</h2>
-        <img src="{{ url_for('static', filename='forecast_plot.png') }}" width="700">
-        <h3>Predicted Values</h3>
-        <table border="1">
-            <tr><th>Date</th><th>Groundwater Level (m bgl)</th></tr>
-            {% for row in forecast_df.itertuples() %}
-                <tr><td>{{ row.date.date() }}</td><td>{{ "%.2f"|format(row.predicted_groundwater_level) }}</td></tr>
-            {% endfor %}
-        </table>
-    {% endif %}
+    <h1>HydroForecaster</h1>
+    <p>Click below to get the latest groundwater forecast from API data.</p>
+    <a href="/predict"><button>Get Latest Forecast</button></a>
 </body>
 </html>

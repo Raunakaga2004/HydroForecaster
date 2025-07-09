@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>HydroForecaster Result</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+    <h1 class="text-primary">HydroForecaster Prediction</h1>
+    <p><strong>Location:</strong> {{ location }}</p>
+    <p><strong>Predicted Groundwater Level:</strong> {{ prediction }}</p>
+
+    <h3>Recent Groundwater Level Trend</h3>
+    <img src="data:image/png;base64,{{ plot_url }}" class="img-fluid mb-4"/>
+
+    <h3>Raw Data Table</h3>
+    <div class="table-responsive">
+        {{ table | safe }}
+    </div>
+</body>
+</html>
